@@ -66,7 +66,7 @@ class chart_viewed extends \core\event\base {
      */
     public function get_url() {
         return new \moodle_url('/report/participationlog/index.php', array(
-            'userid' => $this->userid,
+            'userid' => $this->relateduserid,
             'action' => 'displaychart',
             'startdate' => $this->other['startdate'] ?? null,
             'enddate' => $this->other['enddate'] ?? null
