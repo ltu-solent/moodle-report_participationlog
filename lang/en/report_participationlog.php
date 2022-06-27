@@ -42,6 +42,8 @@ $string['displaylogs'] = 'Display logs';
 
 $string['eighteenmonths'] = 'Eighteen months';
 $string['event'] = 'Event name';
+$string['eventchartviewed'] = 'Participation chart viewed';
+$string['eventreportviewed'] = 'Participation log viewed';
 
 $string['hits'] = 'Hits';
 

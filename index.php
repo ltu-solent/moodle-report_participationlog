@@ -84,10 +84,28 @@ $filterform->display();
 if ($action == 'displaylogs') {
     $table = new report_participationlog\tables\participationlog('report_participationlog', $params);
     $table->out(50, true);
+    $event = \report_participationlog\event\report_viewed::create([
+        'context' => context_system::instance(),
+        'relateduserid' => $params['userid'],
+        'other' => [
+            'startdate' => $params['startdate'],
+            'enddate' => $params['enddate']
+        ]
+    ]);
+    $event->trigger();
 }
 if ($action == 'displaychart') {
     $chart = new report_participationlog\partchart($params);
     $chart->print_chart();
+    $event = \report_participationlog\event\chart_viewed::create([
+        'context' => context_system::instance(),
+        'relateduserid' => $params['userid'],
+        'other' => [
+            'startdate' => $params['startdate'],
+            'enddate' => $params['enddate']
+        ]
+    ]);
+    $event->trigger();
 }
 
 echo $OUTPUT->footer();
