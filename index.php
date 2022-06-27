@@ -67,6 +67,9 @@ if ($userid > 0) {
     $params['action'] = $action;
     $params['startdate'] = $startdate ?? strtotime('6 MONTHS AGO');
     $params['enddate'] = $enddate ?? time();
+    if ($params['enddate'] > time()) {
+        $params['enddate'] = time();
+    }
     $filterform->set_data($params);
 }
 
