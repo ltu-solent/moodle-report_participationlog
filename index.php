@@ -30,6 +30,7 @@ $userid = optional_param('userid', 0, PARAM_INT);
 $action = optional_param('action', 'none', PARAM_ALPHA);
 $startdate = optional_param('start', strtotime('6 MONTHS AGO'), PARAM_INT);
 $enddate = optional_param('end', time(), PARAM_INT);
+$download = optional_param('download', '', PARAM_ALPHA);
 
 require_capability('report/participationlog:view', context_system::instance());
 $PAGE->set_context(context_system::instance());
@@ -77,12 +78,20 @@ $PAGE->set_url(new moodle_url('/report/participationlog.php'), $params);
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
+if ($action == 'displaylogs') {
+    $table = new report_participationlog\tables\participationlog('report_participationlog', $params);
+    $tablepath = 'participationlogs-' . $user->username;
+    $table->is_downloading($download, $tablepath, 'participationlogs');
+    if ($table->is_downloading()) {
+        $table->download();
+    }
+}
+
 echo $OUTPUT->header();
 
 $filterform->display();
 
 if ($action == 'displaylogs') {
-    $table = new report_participationlog\tables\participationlog('report_participationlog', $params);
     $table->out(50, true);
     $event = \report_participationlog\event\report_viewed::create([
         'context' => context_user::instance($params['userid']),

@@ -63,6 +63,7 @@ class participationlog extends table_sql {
         $this->sortable(true, 'timecreated', SORT_DESC);
         $this->no_sorting('participationtype');
         $this->no_sorting('object');
+        $this->show_download_buttons_at([TABLE_P_BOTTOM]);
         // This just prevents showing all users by accident.
         $where = 'false = true';
         $params = [];
@@ -134,6 +135,9 @@ class participationlog extends table_sql {
 
     private function userinfo($row) {
         $user = core_user::get_user($row->userid);
+        if ($this->is_downloading()) {
+            return fullname($user);
+        }
         $content = fullname($user) . ' ' . $row->action . ' ' . $row->target;
         if (isset($row->relateduserid)) {
             if ($relateduser = core_user::get_user($row->relateduserid)) {
@@ -172,5 +176,16 @@ class participationlog extends table_sql {
 
     protected function col_timecreated($row) {
         return userdate($row->timecreated);
+    }
+
+    /**
+     * Download
+     *
+     * @return void
+     */
+    public function download() {
+        \core\session\manager::write_close();
+        $this->out(0, false);
+        exit;
     }
 }
