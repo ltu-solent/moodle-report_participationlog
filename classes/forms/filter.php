@@ -35,7 +35,7 @@ class filter extends moodleform {
     public function definition() {
         $mform =& $this->_form;
         $options = [
-            'ajax' => 'core_search/form-search-user-selector',
+            'ajax' => 'report_participationlog/form-search-user-selector',
             'multiple' => false,
             'noselectionstring' => get_string('selectuser', 'report_participationlog'),
             'valuehtmlcallback' => function($value) {
@@ -46,7 +46,7 @@ class filter extends moodleform {
                 }
                 $details = user_get_user_details($user);
                 return $OUTPUT->render_from_template(
-                        'core_search/form-user-selector-suggestion', $details);
+                        'report_participationlog/form-user-selector-suggestion', $details);
             }
         ];
         $mform->addElement('autocomplete', 'userid', get_string('users'), [], $options);

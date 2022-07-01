@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * User participation log
+ * External services for Ajax etc
  *
  * @package   report_participationlog
  * @author    Mark Sharp <mark.sharp@solent.ac.uk>
@@ -25,7 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022062204;
-$plugin->release   = 2022062200;
-$plugin->requires  = 2020061500;
-$plugin->component = 'report_participationlog';
+$functions = [
+    'report_participationlog_get_relevant_users' => array(
+        'classname' => '\report_participationlog\external',
+        'methodname' => 'get_relevant_users',
+        'description' => 'Gets relevant users for a search request.',
+        'type' => 'read',
+        'ajax' => true
+    )
+];
