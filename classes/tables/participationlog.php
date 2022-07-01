@@ -135,9 +135,6 @@ class participationlog extends table_sql {
 
     private function userinfo($row) {
         $user = core_user::get_user($row->userid);
-        if ($this->is_downloading()) {
-            return fullname($user);
-        }
         $content = fullname($user) . ' ' . $row->action . ' ' . $row->target;
         if (isset($row->relateduserid)) {
             if ($relateduser = core_user::get_user($row->relateduserid)) {
