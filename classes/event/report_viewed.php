@@ -25,7 +25,15 @@
 
 namespace report_participationlog\event;
 
+/**
+ * Report viewed
+ */
 class report_viewed extends \core\event\base {
+    /**
+     * {@inheritDoc}
+     *
+     * @return void
+     */
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;

@@ -33,11 +33,30 @@ use moodle_exception;
 use moodle_url;
 use table_sql;
 
+/**
+ * Participation log table
+ */
 class participationlog extends table_sql {
 
+    /**
+     * Form data from filter form
+     *
+     * @var stdClass
+     */
     private $filters;
+    /**
+     * Strings that will be used on the page a lot
+     *
+     * @var array
+     */
     private $participationstrings = [];
 
+    /**
+     * Table constructor
+     *
+     * @param string $uniqueid
+     * @param array|stdClass $filters
+     */
     public function __construct($uniqueid, $filters) {
         parent::__construct($uniqueid);
         $this->filters = (object)$filters;
@@ -94,6 +113,12 @@ class participationlog extends table_sql {
         $this->set_sql($select, $from, $where, $params);
     }
 
+    /**
+     * Human readable activity description column
+     *
+     * @param stdClass $row
+     * @return string
+     */
     protected function col_object($row) {
         if ($row->contextlevel == CONTEXT_MODULE) {
             return $this->coursemodule($row);
@@ -112,6 +137,12 @@ class participationlog extends table_sql {
         return s($row->eventname . ' ' . $row->objecttable . ' ' . $row->objectid . ' ' . $row->contextlevel);
     }
 
+    /**
+     * Course info column
+     *
+     * @param stdClass $row
+     * @return string
+     */
     private function courseinfo($row) {
         global $DB;
         if (!$course = $DB->get_record('course', ['id' => $row->courseid])) {
@@ -120,6 +151,12 @@ class participationlog extends table_sql {
         return s($course->fullname . ': ' . $row->target . ' ' . $row->action);
     }
 
+    /**
+     * Activity name and actions if still exists
+     *
+     * @param stdClass $row
+     * @return string
+     */
     private function coursemodule($row) {
         global $DB;
         if (!$DB->record_exists('course', ['id' => $row->courseid])) {
@@ -133,6 +170,12 @@ class participationlog extends table_sql {
         return s($mod->modfullname . ': "' . $mod->name . '" ' . $row->target . ' ' . $row->action);
     }
 
+    /**
+     * User information
+     *
+     * @param stdClass $row
+     * @return string
+     */
     private function userinfo($row) {
         $user = core_user::get_user($row->userid);
         $content = fullname($user) . ' ' . $row->action . ' ' . $row->target;
@@ -144,6 +187,11 @@ class participationlog extends table_sql {
         return $content;
     }
 
+    /**
+     * Set up some reused strings
+     *
+     * @return void
+     */
     private function set_participationstrings() {
         $this->participationstrings = [
             'crud' => [
@@ -160,6 +208,12 @@ class participationlog extends table_sql {
         ];
     }
 
+    /**
+     * Participation type column
+     *
+     * @param stdClass $row
+     * @return string
+     */
     protected function col_participationtype($row) {
         $participation =
             $this->participationstrings['crud'][$row->crud] . ' ' .
@@ -171,6 +225,12 @@ class participationlog extends table_sql {
         return $participation;
     }
 
+    /**
+     * Time created column
+     *
+     * @param stdClass $row
+     * @return string
+     */
     protected function col_timecreated($row) {
         return userdate($row->timecreated);
     }

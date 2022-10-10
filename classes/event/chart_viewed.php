@@ -25,7 +25,15 @@
 
 namespace report_participationlog\event;
 
+/**
+ * Chart viewed event
+ */
 class chart_viewed extends \core\event\base {
+    /**
+     * {@inheritDoc}
+     *
+     * @return void
+     */
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
@@ -48,16 +56,6 @@ class chart_viewed extends \core\event\base {
     public function get_description() {
         return "The user with id '$this->userid' viewed the participation timeline for the user with id '$this->relateduserid'.";
     }
-
-    // /**
-    //  * Return the legacy event log data.
-    //  *
-    //  * @return array
-    //  */
-    // protected function get_legacy_logdata() {
-    //     return array($this->userid, "course", "report participation", "report/participation/index.php?id=" . $this->courseid,
-    //             $this->courseid);
-    // }
 
     /**
      * Returns relevant URL.

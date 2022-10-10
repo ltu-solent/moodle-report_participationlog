@@ -32,6 +32,9 @@ use external_multiple_structure;
 use external_single_structure;
 use external_value;
 
+/**
+ * Web service functions for AJAX calls
+ */
 class external extends external_api {
 
     /**

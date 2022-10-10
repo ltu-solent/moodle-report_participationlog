@@ -29,6 +29,9 @@ use core_date;
 use DateInterval;
 use DateTime;
 
+/**
+ * Participation log helper API
+ */
 class api {
     /**
      * Start of day

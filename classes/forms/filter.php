@@ -17,7 +17,7 @@
 /**
  * Filter form for search for user logs
  *
- * @package   report_filter
+ * @package   report_participationlog
  * @author    Mark Sharp <mark.sharp@solent.ac.uk>
  * @copyright 2022 Solent University {@link https://www.solent.ac.uk}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,8 +30,16 @@ require_once($CFG->libdir . '/formslib.php');
 
 use moodleform;
 
+/**
+ * Filter form for searching for users over a time period.
+ */
 class filter extends moodleform {
 
+    /**
+     * Form definition
+     *
+     * @return void
+     */
     public function definition() {
         $mform =& $this->_form;
         $options = [
@@ -70,6 +78,11 @@ class filter extends moodleform {
         $this->add_display_buttons();
     }
 
+    /**
+     * Add display buttons including one each for each type of display
+     *
+     * @return void
+     */
     private function add_display_buttons() {
         $mform =& $this->_form;
         $buttonarray = array();
@@ -78,6 +91,4 @@ class filter extends moodleform {
         $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
         $mform->closeHeaderBefore('buttonar');
     }
-
-    // Do date validation.
 }

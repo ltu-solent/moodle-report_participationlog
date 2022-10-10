@@ -26,7 +26,9 @@
 namespace report_participationlog;
 
 use core_user;
-
+/**
+ * Participation chart
+ */
 class partchart {
 
     /**
@@ -50,6 +52,11 @@ class partchart {
      */
     private $params;
 
+    /**
+     * Chart constructor
+     *
+     * @param array $params including date range and selected userid
+     */
     public function __construct($params) {
         $this->params = $params;
         $this->params += [
@@ -152,7 +159,8 @@ class partchart {
      * The data will have missing data for dates, so we need to fill the gaps so that the
      * chart displays correctly.
      *
-     * @return array
+     * @param array $params Filter parameters
+     * @return array Filtered results
      */
     private function filter_data($params): array {
         // The data is timestamped to the second.
