@@ -25,12 +25,17 @@
 
 namespace report_participationlog;
 
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/externallib.php');
+
 use core_user\external\user_summary_exporter;
 use external_api;
 use external_function_parameters;
 use external_multiple_structure;
 use external_single_structure;
 use external_value;
+use required_capability_exception;
 
 /**
  * Web service functions for AJAX calls
@@ -91,6 +96,10 @@ class external extends external_api {
             if (!isloggedin() || isguestuser()) {
                 return [];
             }
+        }
+
+        if (!has_capability('report/participationlog:view', $systemcontext)) {
+            throw new required_capability_exception($systemcontext, 'report/participationlog:view', 'nopermissions', '');
         }
 
         $users = \core_user::search($query);

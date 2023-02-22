@@ -28,6 +28,7 @@ namespace report_participationlog\forms;
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 
+use context_system;
 use moodleform;
 
 /**
@@ -41,24 +42,33 @@ class filter extends moodleform {
      * @return void
      */
     public function definition() {
+        global $USER;
         $mform =& $this->_form;
-        $options = [
-            'ajax' => 'report_participationlog/form-search-user-selector',
-            'multiple' => false,
-            'noselectionstring' => get_string('selectuser', 'report_participationlog'),
-            'valuehtmlcallback' => function($value) {
-                global $DB, $OUTPUT;
-                $user = $DB->get_record('user', ['id' => (int)$value], '*', IGNORE_MISSING);
-                if (!$user || !user_can_view_profile($user)) {
-                    return false;
+        $cansearchusers = has_capability('report/participationlog:view', context_system::instance());
+        if ($cansearchusers) {
+            $options = [
+                'ajax' => 'report_participationlog/form-search-user-selector',
+                'multiple' => false,
+                'noselectionstring' => get_string('selectuser', 'report_participationlog'),
+                'valuehtmlcallback' => function($value) {
+                    global $DB, $OUTPUT;
+                    $user = $DB->get_record('user', ['id' => (int)$value], '*', IGNORE_MISSING);
+                    if (!$user || !user_can_view_profile($user)) {
+                        return false;
+                    }
+                    $details = user_get_user_details($user);
+                    return $OUTPUT->render_from_template(
+                            'report_participationlog/form-user-selector-suggestion', $details);
                 }
-                $details = user_get_user_details($user);
-                return $OUTPUT->render_from_template(
-                        'report_participationlog/form-user-selector-suggestion', $details);
-            }
-        ];
-        $mform->addElement('autocomplete', 'userid', get_string('users'), [], $options);
-        $mform->addRule('userid', get_string('required'), 'required', null, 'client');
+            ];
+            $mform->addElement('autocomplete', 'userid', get_string('users'), [], $options);
+            $mform->addRule('userid', get_string('required'), 'required', null, 'client');
+        } else {
+            // Set the userid to the logged in user if they cannot search for users
+            // because they can only view their own report.
+            $mform->addElement('hidden', 'userid', $USER->id);
+            $mform->setType('userid', PARAM_INT);
+        }
 
         $thisyear = date('Y');
         $mform->addElement('date_selector', 'startdate', get_string('searchfrom', 'report_participationlog'), [

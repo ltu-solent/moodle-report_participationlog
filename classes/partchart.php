@@ -61,7 +61,7 @@ class partchart {
         $this->params = $params;
         $this->params += [
             'start' => $params['startdate'],
-            'end' => $params['enddate']
+            'end' => strtotime(date('Y-m-d 23:59:59', $params['enddate']))
         ];
 
         $this->chart = new \core\chart_line();
@@ -168,7 +168,7 @@ class partchart {
         // If there are missing dates between the time periods, we need an empty entry.
         // The key will be a cannonical date for each day.
         $starttime = api::stats_get_base_daily($params['start']);
-        $endtime = api::stats_get_base_daily($params['end']);
+        $endtime = strtotime(date('Y-m-d 23:59:59', $params['end']));
         $aftertime = $starttime;
         $times = [];
 

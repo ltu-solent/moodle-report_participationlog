@@ -42,14 +42,14 @@ function report_participationlog_myprofile_navigation(\core_user\output\myprofil
         return true; // Only show the link for the actual person, not visitors.
     }
     // Only show the report link if they have the capabilitiy.
-    if (!has_capability('report/participationlog:view', context_system::instance())) {
-        return true;
-    }
-
-    $url = new moodle_url('/report/participationlog/index.php');
-    $node = new core_user\output\myprofile\node('reports',
-        'participationlog', get_string('pluginname', 'report_participationlog'),
-        null, $url);
+    $canviewall = has_capability('report/participationlog:view', context_system::instance());
+    $canviewown = has_capability('report/participationlog:viewownlog', context_user::instance($USER->id));
+    if ($canviewall || $canviewown) {
+        $url = new moodle_url('/report/participationlog/index.php');
+        $node = new core_user\output\myprofile\node('reports',
+            'participationlog', get_string('pluginname', 'report_participationlog'),
+            null, $url);
         $tree->add_node($node);
+    }
     return true;
 }

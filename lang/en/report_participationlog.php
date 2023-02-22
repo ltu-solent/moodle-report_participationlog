@@ -56,15 +56,17 @@ $string['lookback'] = 'Lookback';
 $string['modulepage'] = 'Module/Course page';
 
 $string['nochartdata'] = '<h3>No data available</h3>';
+$string['nopermissions'] = 'You cannot view this page.';
 
 $string['object'] = 'Activity description';
 $string['oneyear'] = 'One year';
 
 $string['participating'] = 'Participating';
 $string['participatingactivity'] = 'Participating activity';
-$string['participationlog:view'] = 'View participation log';
+$string['participationlog:view'] = 'View participation log for anyone';
+$string['participationlog:viewownlog'] = 'View your own participation log';
 $string['participationtype'] = 'Participation type';
-$string['pluginname'] = 'Participation Log';
+$string['pluginname'] = 'Participation log';
 $string['privacy:metadata'] = 'The Participation Log plugin does not store any personal data.';
 
 $string['read'] = 'Read';

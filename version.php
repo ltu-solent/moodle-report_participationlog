@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022062204;
+$plugin->version   = 2023022102;
 $plugin->release   = 2022062200;
 $plugin->requires  = 2020061500;
 $plugin->component = 'report_participationlog';

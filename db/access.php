@@ -33,5 +33,15 @@ $capabilities = [
         'archetypes' => array(
             'manager' => CAP_ALLOW
         )
-    )
+    ),
+    'report/participationlog:viewownlog' => [
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_USER,
+        'archetypes' => [
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'student' => CAP_ALLOW
+        ]
+    ]
 ];

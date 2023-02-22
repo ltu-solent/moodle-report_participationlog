@@ -32,8 +32,24 @@ $startdate = optional_param('start', strtotime('6 MONTHS AGO'), PARAM_INT);
 $enddate = optional_param('end', time(), PARAM_INT);
 $download = optional_param('download', '', PARAM_ALPHA);
 
-require_capability('report/participationlog:view', context_system::instance());
-$PAGE->set_context(context_system::instance());
+// If the user can only view their own report, don't show them the filter options to search for users.
+// Else default to search.
+$canviewall = has_capability('report/participationlog:view', context_system::instance());
+$canviewown = has_capability('report/participationlog:viewownlog', context_user::instance($USER->id));
+if (!($canviewall || $canviewown)) {
+    throw new moodle_exception('nopermissions', 'report_participationlog');
+}
+if ($canviewall) {
+    $PAGE->set_context(context_system::instance());
+} else {
+    // Only allow the logged in user to see their own report.
+    if ($userid > 0 && $userid != $USER->id) {
+        throw new moodle_exception('nopermissions', 'report_participationlog');
+    }
+    $userid = $USER->id;
+    $PAGE->set_context(context_user::instance($userid));
+}
+
 $title = get_string('pluginname', 'report_participationlog');
 if ($userid > 0) {
     $user = core_user::get_user($userid, '*', MUST_EXIST);
@@ -45,7 +61,7 @@ if ($userid > 0) {
     }
 }
 
-$filterform = new report_participationlog\forms\filter();
+$filterform = new report_participationlog\forms\filter(null);
 $params = [];
 
 if ($filterdata = $filterform->get_data()) {
@@ -90,6 +106,8 @@ if ($action == 'displaylogs') {
 echo $OUTPUT->header();
 
 $filterform->display();
+
+echo "action: $action";
 
 if ($action == 'displaylogs') {
     $table->out(50, true);

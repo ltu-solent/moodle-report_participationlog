@@ -94,10 +94,12 @@ class participationlog extends table_sql {
                 $params['start'] = $this->filters->startdate;
             }
             if (isset($this->filters->enddate)) {
-                if ($this->filters->enddate < $params['start']) {
+                // Enddate timestamp should be the end of the day.
+                $endtime = strtotime(date('Y-m-d 23:59:59', $this->filters->enddate));
+                if ($endtime < $params['start']) {
                     throw new moodle_exception('invalid date range');
                 }
-                $params['end'] = $this->filters->enddate;
+                $params['end'] = $endtime;
             }
             $where = "l.userid = :userid AND l.timecreated >= :start AND l.timecreated <= :end";
         }
