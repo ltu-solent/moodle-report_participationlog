@@ -81,9 +81,8 @@ class partchart {
      */
     private function buildquery() {
         global $DB;
-
         $sql = "SELECT l.id, l.userid, l.eventname,
-        l.timecreated, FROM_UNIXTIME(l.timecreated, '%Y-%m-%d') datecreated,
+        l.timecreated,
         l.courseid, l.action, l.component, l.target,
         l.crud, l.edulevel, l.objecttable, l.objectid, l.contextlevel, l.contextid, l.contextinstanceid, l.relateduserid
             FROM {logstore_standard_log} l
@@ -93,6 +92,10 @@ class partchart {
 
         $this->data = $DB->get_records_sql($sql, $this->params);
         if (count($this->data) > 0) {
+            // Add formatted date after the query so this remains crossplatform compatible.
+            foreach ($this->data as $item) {
+                $item->datecreated = date('Y-m-d', $item->timecreated);
+            }
             $this->prepareoutput();
         }
     }
