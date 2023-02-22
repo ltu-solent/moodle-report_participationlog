@@ -107,8 +107,6 @@ echo $OUTPUT->header();
 
 $filterform->display();
 
-echo "action: $action";
-
 if ($action == 'displaylogs') {
     $table->out(50, true);
     $event = \report_participationlog\event\report_viewed::create([

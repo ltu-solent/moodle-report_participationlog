@@ -49,13 +49,15 @@ class external_test extends advanced_testcase {
      * @return void
      */
     public function test_get_relevant_users() {
+        global $DB;
         $generator = $this->getDataGenerator();
         $manager = $generator->create_user(['firstname' => 'Manager', 'lastname' => 'One']);
         $student1 = $generator->create_user(['firstname' => 'Amelia', 'lastname' => 'Aardvark']);
         $student2 = $generator->create_user(['firstname' => 'Amelia', 'lastname' => 'Beetle']);
         $generator->create_user(['firstname' => 'Zebedee', 'lastname' => 'Boing']);
-
-        $generator->role_assign('manager', $manager->id, context_system::instance());
+        // The role_assign function doesn't take a string value until M4.1.
+        $managerroleid = $DB->get_field('role', 'id', ['shortname' => 'manager'], MUST_EXIST);
+        $generator->role_assign($managerroleid, $manager->id, context_system::instance());
 
         $this->setUser($manager);
         $result = external::clean_returnvalue(
