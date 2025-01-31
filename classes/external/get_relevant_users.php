@@ -26,7 +26,7 @@
 namespace report_participationlog\external;
 
 use context_system;
-use required_capability_exception;
+use core\exception\required_capability_exception;
 use core_external\external_api;
 use core_external\external_function_parameters;
 use core_external\external_multiple_structure;
