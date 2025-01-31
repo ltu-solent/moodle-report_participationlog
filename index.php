@@ -67,7 +67,7 @@ $params = [];
 if ($filterdata = $filterform->get_data()) {
     $userid = $filterdata->userid;
     $params = [
-        'userid' => $userid
+        'userid' => $userid,
     ];
     if (isset($filterdata->displaychart)) {
         $action = 'displaychart';
@@ -114,8 +114,8 @@ if ($action == 'displaylogs') {
         'relateduserid' => $params['userid'],
         'other' => [
             'startdate' => $params['startdate'],
-            'enddate' => $params['enddate']
-        ]
+            'enddate' => $params['enddate'],
+        ],
     ]);
     $event->trigger();
 }
@@ -127,8 +127,8 @@ if ($action == 'displaychart') {
         'relateduserid' => $params['userid'],
         'other' => [
             'startdate' => $params['startdate'],
-            'enddate' => $params['enddate']
-        ]
+            'enddate' => $params['enddate'],
+        ],
     ]);
     $event->trigger();
 }

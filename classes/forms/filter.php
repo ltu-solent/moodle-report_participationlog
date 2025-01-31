@@ -59,7 +59,7 @@ class filter extends moodleform {
                     $details = user_get_user_details($user);
                     return $OUTPUT->render_from_template(
                             'report_participationlog/form-user-selector-suggestion', $details);
-                }
+                },
             ];
             $mform->addElement('autocomplete', 'userid', get_string('users'), [], $options);
             $mform->addRule('userid', get_string('required'), 'required', null, 'client');
@@ -73,13 +73,13 @@ class filter extends moodleform {
         $thisyear = date('Y');
         $mform->addElement('date_selector', 'startdate', get_string('searchfrom', 'report_participationlog'), [
             'startyear' => $thisyear - 3,
-            'stopyear' => $thisyear
+            'stopyear' => $thisyear,
         ]);
 
         $mform->setDefault('startdate', strtotime('6 MONTHS AGO'));
         $mform->addElement('date_selector', 'enddate', get_string('searchto', 'report_participationlog'), [
             'startyear' => $thisyear - 3,
-            'stopyear' => $thisyear
+            'stopyear' => $thisyear,
         ]);
 
         $mform->addElement('hidden', 'action', 'none');
@@ -95,10 +95,10 @@ class filter extends moodleform {
      */
     private function add_display_buttons() {
         $mform =& $this->_form;
-        $buttonarray = array();
+        $buttonarray = [];
         $buttonarray[] = &$mform->createElement('submit', 'displaychart', get_string('displaychart', 'report_participationlog'));
         $buttonarray[] = &$mform->createElement('submit', 'displaylogs', get_string('displaylogs', 'report_participationlog'));
-        $mform->addGroup($buttonarray, 'buttonar', '', array(' '), false);
+        $mform->addGroup($buttonarray, 'buttonar', '', [' '], false);
         $mform->closeHeaderBefore('buttonar');
     }
 }

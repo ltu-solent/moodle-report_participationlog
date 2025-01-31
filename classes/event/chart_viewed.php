@@ -63,12 +63,12 @@ class chart_viewed extends \core\event\base {
      * @return \moodle_url
      */
     public function get_url() {
-        return new \moodle_url('/report/participationlog/index.php', array(
+        return new \moodle_url('/report/participationlog/index.php', [
             'userid' => $this->relateduserid,
             'action' => 'displaychart',
             'startdate' => $this->other['startdate'] ?? null,
-            'enddate' => $this->other['enddate'] ?? null
-        ));
+            'enddate' => $this->other['enddate'] ?? null,
+        ]);
     }
 
     /**

@@ -23,31 +23,29 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace report_participationlog;
+namespace report_participationlog\external;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->libdir . '/externallib.php');
-
-use core_user\external\user_summary_exporter;
-use external_api;
-use external_function_parameters;
-use external_multiple_structure;
-use external_single_structure;
-use external_value;
+use context_system;
 use required_capability_exception;
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_multiple_structure;
+use core_external\external_single_structure;
+use core_external\external_value;
+use core_user;
+use core_user\external\user_summary_exporter;
 
 /**
  * Web service functions for AJAX calls
  */
-class external extends external_api {
+class get_relevant_users extends external_api {
 
     /**
      * Returns parameter types for get_relevant_users function.
      *
-     * @return \external_function_parameters Parameters
+     * @return external_function_parameters Parameters
      */
-    public static function get_relevant_users_parameters() {
+    public static function execute_parameters() {
         return new external_function_parameters([
                 'query' => new external_value(PARAM_RAW,
                     'Query string (full or partial user full name or other details)'),
@@ -59,14 +57,14 @@ class external extends external_api {
      *
      * @return \external_description Result type
      */
-    public static function get_relevant_users_returns() {
+    public static function execute_returns() {
         return new external_multiple_structure(
                 new external_single_structure([
                     'id' => new external_value(PARAM_INT, 'User id'),
                     'fullname' => new external_value(PARAM_RAW, 'Full name as text'),
                     'idnumber' => new external_value(PARAM_RAW, 'Idnumber field for user', VALUE_OPTIONAL),
                     'email' => new external_value(PARAM_RAW, 'email address for user', VALUE_OPTIONAL),
-                    'profileimageurlsmall' => new external_value(PARAM_URL, 'URL to small profile image')
+                    'profileimageurlsmall' => new external_value(PARAM_URL, 'URL to small profile image'),
                 ]));
     }
 
@@ -77,18 +75,18 @@ class external extends external_api {
      * @param string $query Query text
      * @return array Defined return structure
      */
-    public static function get_relevant_users($query) {
+    public static function execute($query): array {
         global $CFG, $PAGE;
 
         // Validate parameter.
         [
             'query' => $query,
-        ] = self::validate_parameters(self::get_relevant_users_parameters(), [
+        ] = self::validate_parameters(self::execute_parameters(), [
             'query' => $query,
         ]);
 
         // Validate the context (search page is always system context).
-        $systemcontext = \context_system::instance();
+        $systemcontext = context_system::instance();
         self::validate_context($systemcontext);
 
         // If not logged in, can't see anyone when forceloginforprofiles is on.
@@ -102,7 +100,7 @@ class external extends external_api {
             throw new required_capability_exception($systemcontext, 'report/participationlog:view', 'nopermissions', '');
         }
 
-        $users = \core_user::search($query);
+        $users = core_user::search($query);
         $showuseridentity = explode(',', $CFG->showuseridentity);
         $result = [];
         foreach ($users as $user) {

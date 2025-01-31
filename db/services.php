@@ -26,11 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'report_participationlog_get_relevant_users' => array(
-        'classname' => '\report_participationlog\external',
-        'methodname' => 'get_relevant_users',
+    'report_participationlog_get_relevant_users' => [
+        'classname' => '\report_participationlog\external\get_relevant_users',
         'description' => 'Gets relevant users for a search request.',
         'type' => 'read',
-        'ajax' => true
-    )
+        'ajax' => true,
+    ],
 ];

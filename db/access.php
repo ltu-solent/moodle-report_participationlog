@@ -26,14 +26,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-    'report/participationlog:view' => array(
+    'report/participationlog:view' => [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        )
-    ),
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+    ],
     'report/participationlog:viewownlog' => [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
@@ -41,7 +41,7 @@ $capabilities = [
         'archetypes' => [
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'student' => CAP_ALLOW
-        ]
-    ]
+            'student' => CAP_ALLOW,
+        ],
+    ],
 ];

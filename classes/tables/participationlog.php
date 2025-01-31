@@ -68,7 +68,7 @@ class participationlog extends table_sql {
             'object',
             'course',
             'participationtype',
-            'timecreated'
+            'timecreated',
         ];
         $this->define_columns($columns);
         $this->define_headers([
@@ -200,13 +200,13 @@ class participationlog extends table_sql {
                 'c' => get_string('create', 'report_participationlog'),
                 'r' => get_string('read', 'report_participationlog'),
                 'u' => get_string('update', 'report_participationlog'),
-                'd' => get_string('delete', 'report_participationlog')
+                'd' => get_string('delete', 'report_participationlog'),
             ],
             'edulevel' => [
                 \core\event\base::LEVEL_PARTICIPATING => get_string('participating', 'report_participationlog'),
                 \core\event\base::LEVEL_TEACHING => get_string('teaching', 'report_participationlog'),
-                \core\event\base::LEVEL_OTHER => ''
-            ]
+                \core\event\base::LEVEL_OTHER => '',
+            ],
         ];
     }
 

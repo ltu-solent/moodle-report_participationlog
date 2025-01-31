@@ -61,7 +61,7 @@ class partchart {
         $this->params = $params;
         $this->params += [
             'start' => $params['startdate'],
-            'end' => strtotime(date('Y-m-d 23:59:59', $params['enddate']))
+            'end' => strtotime(date('Y-m-d 23:59:59', $params['enddate'])),
         ];
 
         $this->chart = new \core\chart_line();

@@ -49,8 +49,8 @@ $string['hits'] = 'Hits';
 
 $string['id'] = 'ID';
 
-$string['logsfor'] = 'Participation logs for {$a}';
 $string['login'] = 'Logins';
+$string['logsfor'] = 'Participation logs for {$a}';
 $string['lookback'] = 'Lookback';
 
 $string['modulepage'] = 'Module/Course page';
