@@ -65,6 +65,7 @@ class get_relevant_users extends external_api {
                     'idnumber' => new external_value(PARAM_RAW, 'Idnumber field for user', VALUE_OPTIONAL),
                     'email' => new external_value(PARAM_RAW, 'email address for user', VALUE_OPTIONAL),
                     'profileimageurlsmall' => new external_value(PARAM_URL, 'URL to small profile image'),
+                    'label' => new external_value(PARAM_RAW, 'Label for autocomplete'),
                 ]));
     }
 
@@ -76,7 +77,7 @@ class get_relevant_users extends external_api {
      * @return array Defined return structure
      */
     public static function execute($query): array {
-        global $CFG, $PAGE;
+        global $CFG, $OUTPUT, $PAGE;
 
         // Validate parameter.
         [
@@ -115,7 +116,8 @@ class get_relevant_users extends external_api {
             foreach ($showuseridentity as $ident) {
                 $item[$ident] = $fulldetails->{$ident};
             }
-
+            $label = $OUTPUT->render_from_template('report_participationlog/form-user-selector-suggestion', $item);
+            $item['label'] = $label;
             $result[] = (object)$item;
         }
         return $result;

@@ -22,52 +22,21 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery', 'core/ajax', 'core/templates'], function($, Ajax, Templates) {
+import Ajax from 'core/ajax';
 
-    return /** @alias module:report_participationlog/form-search-user-selector */ {
+export default {
+    processResults(selector, results) {
+        return results.map(user => ({
+            value: user.id,
+            label: user.label,
+        }));
+    },
 
-        processResults: function(selector, results) {
-            var users = [];
-            $.each(results, function(index, user) {
-                users.push({
-                    value: user.id,
-                    label: user._label
-                });
-            });
-            return users;
-        },
-
-        transport: function(selector, query, success, failure) {
-            var promise;
-
-            var args = {query: query};
-
-            // Call AJAX request.
-            promise = Ajax.call([{methodname: 'report_participationlog_get_relevant_users', args: args}]);
-
-            // When AJAX request returns, handle the results.
-            promise[0].then(function(results) {
-                var promises = [];
-
-                // Render label with user name and picture.
-                $.each(results, function(index, user) {
-                    promises.push(Templates.render('report_participationlog/form-user-selector-suggestion', user));
-                });
-
-                // Apply the label to the results.
-                return $.when.apply($.when, promises).then(function() {
-                    var args = arguments;
-                    var i = 0;
-                    $.each(results, function(index, user) {
-                        user._label = args[i++];
-                    });
-                    success(results);
-                    return;
-                });
-
-            }).fail(failure);
-        }
-
-    };
-
-});
+    transport(selector, query, success, failure) {
+        const args = {query};
+        const promise = Ajax.call([{methodname: 'report_participationlog_get_relevant_users', args}])[0];
+        return promise.done(results => {
+            success(results);
+        }).fail(failure);
+    }
+};
